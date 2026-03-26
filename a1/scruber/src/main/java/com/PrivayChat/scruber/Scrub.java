@@ -20,6 +20,12 @@ public class Scrub implements IScrub {
 
     @Override
     public String scrubPrompt(String prompt, ScrubbingModes scrubbingMode) {
+        if (prompt == null || scrubbingMode == null) {
+            throw new NullPointerException("prompt and scrubbingMode must not be null");
+        }
+        if (prompt.trim().isEmpty()) {
+            throw new IllegalArgumentException("prompt must not be blank");
+        }
 
         if (scrubbingMode == ScrubbingModes.ONLY_DIGITS) {
             return scrubDigits.scrubDigits(prompt);
