@@ -19,15 +19,15 @@ public class Scrub implements IScrub {
     }
 
     @Override
-    public String scrub(String prompt, ScrubbingModes scrubbingMode) {
+    public String scrubPrompt(String prompt, ScrubbingModes scrubbingMode) {
 
         if (scrubbingMode == ScrubbingModes.ONLY_DIGITS) {
             return scrubDigits.scrubDigits(prompt);
         } else if (scrubbingMode == ScrubbingModes.ONLY_EMAILS) {
             return scrubEmails.scrubEmail(prompt);
         } else if (scrubbingMode == ScrubbingModes.FULL_SCRUBBING) {
-            String result = scrubDigits.scrubDigits(prompt);
-            return scrubEmails.scrubEmail(result);
+            String result =  scrubEmails.scrubEmail(prompt);
+            return scrubDigits.scrubDigits(result);
         } else {
             throw new IllegalArgumentException("Invalid scrubbing mode");
         }

@@ -2,11 +2,15 @@ package com.PrivayChat.scruber;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.PrivayChat.scruber.Interfaces.IScrub;
+import com.PrivayChat.scruber.Enums.ScrubbingModes;
+import com.PrivayChat.scruber.impl.scrubDigitImpl;
+import com.PrivayChat.scruber.impl.scrubEmailImpl;
 
 @SpringBootApplication
 public class ScruberApplication {
 
-	public static boolean STATE = true;
+	public static boolean SYS_STATE = true;
 
 	public static void menu() {
 		System.out.println("Welcome to the Scrubber Application!");
@@ -18,25 +22,39 @@ public class ScruberApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScruberApplication.class, args);
-		while (STATE) {
+
+		IScrub scrub = new Scrub(new scrubDigitImpl(), new scrubEmailImpl());
+
+		while (SYS_STATE) {
 
 			menu();
-			String input = System.console().readLine();
+			String COMMAND = System.console().readLine();
+			System.out.println("Please enter the prompt to be scrubbed");
+			String prompt = System.console().readLine();
+			String result = null;
+			String MODE = null;
 
-			switch (input) {
+			switch (COMMAND) {
 				case "1":
-					System.out.println("Digits scrubbing mode.");
+					MODE = "Digits scrubbing mode.";
+					result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_DIGITS);
 					break;
 				case "2":
-					System.out.println("Emails scrubbing mode.");
+					MODE = "Emails scrubbing mode.";
+					result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_EMAILS);
 					break;
 				case "3":
-					System.out.println("Full Scrubbing mode.");
+					MODE = "Full Scrubbing mode.";
+					result = scrub.scrubPrompt(prompt, ScrubbingModes.FULL_SCRUBBING);
 					break;
 				default:
 					System.out.println("Invalid selection. Please try again.");
 			}
-			
+
+			System.out.println("");
+			System.out.println(MODE);
+			System.out.println(result);
+
 		}
 
 	}
