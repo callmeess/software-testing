@@ -10,53 +10,54 @@ import com.PrivayChat.scruber.impl.scrubEmailImpl;
 @SpringBootApplication
 public class ScruberApplication {
 
-	public static boolean SYS_STATE = true;
+  public static boolean SYS_STATE = true;
 
-	public static void menu() {
-		System.out.println("Welcome to the Scrubber Application!");
-		System.out.println("Please select a scrubbing mode:");
-		System.out.println("1. Only Digits");
-		System.out.println("2. Only Emails");
-		System.out.println("3. Full Scrubbing");
-	}
+  public static void print(String str) {
+    System.out.println(str);
+  }
 
-	public static void main(String[] args) {
-		SpringApplication.run(ScruberApplication.class, args);
+  public static void menu() {
+    print("Welcome to the Scrubber Application!");
+    print("Please select a scrubbing mode:");
+    print("1. Only Digits");
+    print("2. Only Emails");
+    print("3. Full Scrubbing");
+  }
 
-		IScrub scrub = new Scrub(new scrubDigitImpl(), new scrubEmailImpl());
+  public static void main(String[] args) {
+    SpringApplication.run(ScruberApplication.class, args);
 
-		while (SYS_STATE) {
+    IScrub scrub = new Scrub(new scrubDigitImpl(), new scrubEmailImpl());
 
-			menu();
-			String COMMAND = System.console().readLine();
-			System.out.println("Please enter the prompt to be scrubbed");
-			String prompt = System.console().readLine();
-			String result = null;
-			String MODE = null;
+    while (SYS_STATE) {
 
-			switch (COMMAND) {
-				case "1":
-					MODE = "Digits scrubbing mode.";
-					result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_DIGITS);
-					break;
-				case "2":
-					MODE = "Emails scrubbing mode.";
-					result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_EMAILS);
-					break;
-				case "3":
-					MODE = "Full Scrubbing mode.";
-					result = scrub.scrubPrompt(prompt, ScrubbingModes.FULL_SCRUBBING);
-					break;
-				default:
-					System.out.println("Invalid selection. Please try again.");
-			}
+      menu();
+      String COMMAND = System.console().readLine();
+      System.out.println("Please enter the prompt to be scrubbed");
+      String prompt = System.console().readLine();
+      String result = null;
+      String MODE = null;
 
-			System.out.println("");
-			System.out.println(MODE);
-			System.out.println(result);
+      switch (COMMAND) {
+        case "1":
+          MODE = "Digits scrubbing mode.";
+          result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_DIGITS);
+          break;
+        case "2":
+          MODE = "Emails scrubbing mode.";
+          result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_EMAILS);
+          break;
+        case "3":
+          MODE = "Full Scrubbing mode.";
+          result = scrub.scrubPrompt(prompt, ScrubbingModes.FULL_SCRUBBING);
+          break;
+        default:
+          print("Invalid selection. Please try again.");
+      }
 
-		}
-
-	}
-
+      print("");
+      print(MODE);
+      print(result);
+    }
+  }
 }
