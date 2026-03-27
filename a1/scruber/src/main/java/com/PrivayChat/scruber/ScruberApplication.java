@@ -31,6 +31,10 @@ public class ScruberApplication {
   @Bean
   public CommandLineRunner commandLineRunner(IScrub scrub) {
     return args -> {
+      if (System.console() == null) {
+        return;
+      }
+
       while (SYS_STATE) {
         menu();
         String COMMAND = System.console().readLine();
