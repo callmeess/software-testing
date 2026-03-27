@@ -1,12 +1,14 @@
-package com.PrivayChat.scruber;
+package com.PrivayChat.scruber.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.PrivayChat.scruber.Enums.ScrubbingModes;
 import com.PrivayChat.scruber.Interfaces.IScrub;
 import com.PrivayChat.scruber.Interfaces.IScrubDigits;
 import com.PrivayChat.scruber.Interfaces.IScrubEmails;
 
+@Component
 public class Scrub implements IScrub {
 
     private IScrubDigits scrubDigits;

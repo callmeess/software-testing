@@ -2,10 +2,10 @@ package com.PrivayChat.scruber;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import com.PrivayChat.scruber.Interfaces.IScrub;
 import com.PrivayChat.scruber.Enums.ScrubbingModes;
-import com.PrivayChat.scruber.impl.scrubDigitImpl;
-import com.PrivayChat.scruber.impl.scrubEmailImpl;
 
 @SpringBootApplication
 public class ScruberApplication {
@@ -26,38 +26,40 @@ public class ScruberApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(ScruberApplication.class, args);
+  }
 
-    IScrub scrub = new Scrub(new scrubDigitImpl(), new scrubEmailImpl());
+  @Bean
+  public CommandLineRunner commandLineRunner(IScrub scrub) {
+    return args -> {
+      while (SYS_STATE) {
+        menu();
+        String COMMAND = System.console().readLine();
+        System.out.println("Please enter the prompt to be scrubbed");
+        String prompt = System.console().readLine();
+        String result = null;
+        String MODE = null;
 
-    while (SYS_STATE) {
+        switch (COMMAND) {
+          case "1":
+            MODE = "Digits scrubbing mode.";
+            result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_DIGITS);
+            break;
+          case "2":
+            MODE = "Emails scrubbing mode.";
+            result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_EMAILS);
+            break;
+          case "3":
+            MODE = "Full Scrubbing mode.";
+            result = scrub.scrubPrompt(prompt, ScrubbingModes.FULL_SCRUBBING);
+            break;
+          default:
+            print("Invalid selection. Please try again.");
+        }
 
-      menu();
-      String COMMAND = System.console().readLine();
-      System.out.println("Please enter the prompt to be scrubbed");
-      String prompt = System.console().readLine();
-      String result = null;
-      String MODE = null;
-
-      switch (COMMAND) {
-        case "1":
-          MODE = "Digits scrubbing mode.";
-          result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_DIGITS);
-          break;
-        case "2":
-          MODE = "Emails scrubbing mode.";
-          result = scrub.scrubPrompt(prompt, ScrubbingModes.ONLY_EMAILS);
-          break;
-        case "3":
-          MODE = "Full Scrubbing mode.";
-          result = scrub.scrubPrompt(prompt, ScrubbingModes.FULL_SCRUBBING);
-          break;
-        default:
-          print("Invalid selection. Please try again.");
+        print("");
+        print(MODE);
+        print(result);
       }
-
-      print("");
-      print(MODE);
-      print(result);
-    }
+    };
   }
 }

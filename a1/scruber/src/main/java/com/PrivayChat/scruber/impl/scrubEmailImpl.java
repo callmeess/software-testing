@@ -2,6 +2,9 @@ package com.PrivayChat.scruber.impl;
 
 import com.PrivayChat.scruber.Interfaces.IScrubEmails;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class scrubEmailImpl implements IScrubEmails {
 
     @Override

@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 import com.PrivayChat.scruber.Interfaces.IScrubDigits;
 
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class scrubDigitImpl implements IScrubDigits {
 
     private static final Pattern PRICE_PATTERN = Pattern.compile("\\b\\d+\\$");
