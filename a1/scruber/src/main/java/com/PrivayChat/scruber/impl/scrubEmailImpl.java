@@ -4,6 +4,9 @@ import java.util.regex.Pattern;
 
 import com.PrivayChat.scruber.Interfaces.IScrubEmails;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class scrubEmailImpl implements IScrubEmails {
 
     private static final Pattern EMAIL_PATTERN =

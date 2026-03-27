@@ -6,6 +6,9 @@ import java.util.regex.Pattern;
 import com.PrivayChat.scruber.Interfaces.IScrubDigits;
 
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class scrubDigitImpl implements IScrubDigits {
 
     // Replace a digit only when it is not part of a number immediately followed by '$'.
