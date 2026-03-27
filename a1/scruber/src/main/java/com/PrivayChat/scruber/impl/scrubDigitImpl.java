@@ -1,9 +1,6 @@
 
 package com.PrivayChat.scruber.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.PrivayChat.scruber.Interfaces.IScrubDigits;
@@ -11,8 +8,9 @@ import com.PrivayChat.scruber.Interfaces.IScrubDigits;
 
 public class scrubDigitImpl implements IScrubDigits {
 
-    private static final Pattern PRICE_PATTERN = Pattern.compile("\\b\\d+\\$");
-    private static final String PRICE_PLACEHOLDER = "__PRICE_PLACEHOLDER__";
+    // Replace a digit only when it is not part of a number immediately followed by '$'.
+    private static final Pattern SCRUBBABLE_DIGIT_PATTERN =
+            Pattern.compile("\\d(?![\\d,]*(?:\\.\\d+)?\\$)");
 
     @Override
     public String scrubDigits(String prompt) {
@@ -23,23 +21,7 @@ public class scrubDigitImpl implements IScrubDigits {
             throw new IllegalArgumentException("prompt must not be blank");
         }
 
-        Matcher priceMatcher = PRICE_PATTERN.matcher(prompt);
-        List<String> prices = new ArrayList<>();
-        StringBuffer protectedPrompt = new StringBuffer();
-
-        while (priceMatcher.find()) {
-            prices.add(priceMatcher.group());
-            priceMatcher.appendReplacement(protectedPrompt, PRICE_PLACEHOLDER);
-        }
-        priceMatcher.appendTail(protectedPrompt);
-
-        String masked = protectedPrompt.toString().replaceAll("\\d", "X");
-
-        for (String price : prices) {
-            masked = masked.replaceFirst(PRICE_PLACEHOLDER, Matcher.quoteReplacement(price));
-        }
-
-        return masked;
+        return SCRUBBABLE_DIGIT_PATTERN.matcher(prompt).replaceAll("X");
     }
 
     
