@@ -1,8 +1,13 @@
 package com.PrivayChat.scruber.impl;
 
+import java.util.regex.Pattern;
+
 import com.PrivayChat.scruber.Interfaces.IScrubEmails;
 
 public class scrubEmailImpl implements IScrubEmails {
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
 
     @Override
     public String scrubEmail(String prompt) {
@@ -13,7 +18,7 @@ public class scrubEmailImpl implements IScrubEmails {
             throw new IllegalArgumentException("prompt must not be blank");
         }
 
-        return prompt.replaceAll("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", "[EMAIL_HIDDEN]");
+        return EMAIL_PATTERN.matcher(prompt).replaceAll("[EMAIL_HIDDEN]");
     }
     
 }
