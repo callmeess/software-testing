@@ -1,23 +1,13 @@
 package Services;
 
-import java.util.regex.Pattern;
-
 import Interfaces.IScrubEmails;
 
 public class EmailScrubber implements IScrubEmails {
-
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
-
     @Override
     public String scrub(String input) {
-        if (input == null) {
-            throw new NullPointerException("Input cannot be null");
+        if (input == null || input.isBlank()) {
+            throw new NullPointerException("Input cannot be null or blank");
         }
-        if (input.isBlank()) {
-            throw new IllegalArgumentException("Input cannot be blank");
-        }
-
-        return EMAIL_PATTERN.matcher(input).replaceAll("[EMAIL_HIDDEN]");
+        return input == null ? "" : input.replaceAll("[a-zA-Z0-0._%+-]+@[a-zA-Z0-0.-]+\\.[a-zA-Z]{2,6}", "[EMAIL_HIDDEN]");
     }
 }

@@ -14,24 +14,14 @@ public class MainScrubber implements IScrub {
 
     @Override
     public String scrub(String input, ScrubMode mode) {
-        if(input == null) {
-            throw new NullPointerException("Input cannot be null");
-        }
-
-        if (mode == null) {
-            throw new IllegalArgumentException("ScrubMode cannot be null");
-        }
-
         try {
             return switch (mode) {
                 case ONLY_DIGITS -> digitScrubber.scrub(input);
                 case ONLY_EMAILS -> emailScrubber.scrub(input);
-                case FULL_SCRUBBING -> {
-                    String res = emailScrubber.scrub(input);
-                    yield digitScrubber.scrub(res);
-                }
+                case FULL_SCRUBBING -> digitScrubber.scrub(emailScrubber.scrub(input));
             };
-        } catch (IllegalArgumentException | NullPointerException e) {
+
+        } catch(IllegalArgumentException | NullPointerException e){
             return null;
         }
     }
