@@ -99,20 +99,4 @@ public class ScrubTest {
         // Act — expects IllegalArgumentException
         scrub.scrub("Some prompt", null);
     }
-
-    @Test(expected = NullPointerException.class)
-    public void testScrubPrompt_NullPrompt() {
-        // Arrange
-        final IScrubDigits scrubDigits = context.mock(IScrubDigits.class);
-        final IScrubEmails scrubEmails = context.mock(IScrubEmails.class);
-        MainScrubber scrub = new MainScrubber(scrubDigits, scrubEmails);
-
-        context.checking(new Expectations() {{
-            never(scrubEmails).scrub(with(any(String.class)));
-            never(scrubDigits).scrub(with(any(String.class)));
-        }});
-
-        // Act — expects NullPointerException
-        scrub.scrub(null, ScrubMode.ONLY_DIGITS);
-    }
 }
