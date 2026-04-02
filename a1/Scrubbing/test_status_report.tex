@@ -1,0 +1,70 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{xurl}
+
+\title{Unit Test Status Report}
+\author{Scrubbing Project}
+
+\begin{document}
+\maketitle
+
+\section*{Overall Status}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Test Class} & \textbf{Executed} & \textbf{Passed} & \textbf{Failed} \\
+\hline
+\texttt{DigitScrubberTest} & 8 & 4 & 4 \\
+\hline
+\texttt{EmailScrubberTest} & 11 & 10 & 1 \\
+\hline
+\texttt{ScrubTest} & 5 & 3 & 2 \\
+\hline
+\textbf{Total} & \textbf{24} & \textbf{17} & \textbf{7} \\
+\hline
+\end{tabular}
+\end{center}
+
+\section*{What Passed}
+\begin{itemize}
+  \item Core scrubbing behavior works in normal paths: email-only, digits-only, and full-scrub happy paths.
+  \item Most edge cases pass: 17 of 24 tests succeeded.
+\end{itemize}
+
+\section*{Failed Tests and Justification}
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.32\textwidth}|>{\raggedright\arraybackslash}p{0.22\textwidth}|>{\raggedright\arraybackslash}p{0.38\textwidth}|}
+\hline
+\textbf{Failed Test} & \textbf{Observed Failure} & \textbf{Justification} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Failed Test} & \textbf{Observed Failure} & \textbf{Justification} \\
+\hline
+\endhead
+
+\url{testScrubDigits_PriceNotScrubbed} & \texttt{100\$} became \texttt{XXX\$}. & Digit logic replaces all digits globally; there is no price-preservation rule. \\
+\hline
+
+\url{testScrubDigits_DecimalPriceNotScrubbed} & \texttt{100.50\$} became \texttt{XXX.XX\$}. & Decimal currency format is not exempted from digit masking. \\
+\hline
+
+\url{testScrubDigits_CommaSeparatedPriceNotScrubbed} & \texttt{1,000\$} became \texttt{X,XXX\$}. & Comma-separated currency also gets fully digit-masked; missing protected-token handling. \\
+\hline
+
+\url{testScrubDigits_PlaceholderLikeUserTextShouldRemainUntouched} & Price digits changed to \texttt{XXX\$}. & Scrubber has no context-sensitive distinction between sensitive digits and allowed price literals. \\
+\hline
+
+\url{testScrubEmail_EmptyString} & Exception type mismatch. & Blank input currently throws \texttt{NullPointerException}; test expects \texttt{IllegalArgumentException}. \\
+\hline
+
+\url{testScrubPrompt_InvalidScrubbingMode} & Expected exception not thrown. & \texttt{MainScrubber} catches mode/input exceptions and returns \texttt{null}, so the expected \texttt{IllegalArgumentException} is skipped. \\
+\hline
+
+\end{longtable}
+
+\end{document}
