@@ -2,51 +2,67 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+	<!-- Removed Spring Boot parent so the build won't attempt to download the parent POM. -->
 	<groupId>com.PrivayChat</groupId>
 	<artifactId>scruber</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>
 	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<!-- Use the standard maven compiler properties to target Java 21 -->
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
+
+	<!--
+	  Dependencies are declared with <scope>system</scope> and explicit
+	  systemPath entries pointing to jars in the `lib/` folder.
+	  Add any additional jars you need under `lib/` and add matching
+	  dependency entries here.
+	-->
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/junit-4.13.2.jar</systemPath>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/mockito-all-1.10.19.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>1.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/hamcrest-core-1.3.jar</systemPath>
+		</dependency>
+
+		<!-- Additional test libs already present in lib/ (optional): jmock, objenesis, etc. -->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- Use the surefire plugin to run tests. If you want to run JUnit Jupiter (JUnit5),
+				 place the appropriate JARs into `lib/` and add system-scoped dependencies here.
+				 For now the configuration is minimal so system-scoped jars are placed on the test classpath. -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M7</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

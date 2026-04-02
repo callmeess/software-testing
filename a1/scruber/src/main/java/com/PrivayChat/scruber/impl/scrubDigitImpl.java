@@ -16,15 +16,15 @@ public class scrubDigitImpl implements IScrubDigits {
             Pattern.compile("\\d(?![\\d,]*(?:\\.\\d+)?\\$)");
 
     @Override
-    public String scrubDigits(String prompt) {
-        if (prompt == null) {
-            throw new NullPointerException("prompt must not be null");
+    public String scrubDigits(String Input) throws IllegalArgumentException, NullPointerException {
+        if (Input == null) {
+            throw new NullPointerException("Input cannot be null");
         }
-        if (prompt.trim().isEmpty()) {
-            throw new IllegalArgumentException("prompt must not be blank");
+        if (Input.trim().isEmpty()) {
+            throw new IllegalArgumentException("Input cannot be blank");
         }
 
-        return SCRUBBABLE_DIGIT_PATTERN.matcher(prompt).replaceAll("X");
+        return SCRUBBABLE_DIGIT_PATTERN.matcher(Input).replaceAll("X");
     }
 
     
